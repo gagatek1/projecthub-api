@@ -3,6 +3,7 @@ from starlette import status
 
 from app.models.project import Project
 from app.services.project.create_service import create_service
+from app.services.project.delete_service import delete_service
 from app.services.project.get_service import get_project, get_projects
 
 project_router = APIRouter(prefix="/projects", tags=["projects"])
@@ -27,3 +28,8 @@ async def show_project(project_id: str):
     project = get_project(project_id)
 
     return project
+
+
+@project_router.delete("/delete/{project_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_project(project_id: str):
+    delete_service(project_id)
