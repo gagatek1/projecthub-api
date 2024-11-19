@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 
 def generate_id():
-    return str(uuid4)
+    return str(uuid4())
 
 
 class Project(BaseModel):
