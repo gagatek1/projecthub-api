@@ -1,6 +1,9 @@
 from os import getenv
 
 from boto3 import resource
+from dotenv import load_dotenv
+
+load_dotenv()
 
 dynamodb = resource(
     "dynamodb",
@@ -25,6 +28,7 @@ def create_tables():
                 TableName=table["TableName"],
                 KeySchema=table["KeySchema"],
                 AttributeDefinitions=table["AttributeDefinitions"],
+                BillingMode="PAY_PER_REQUEST",
             )
     except Exception as e:
         print(e)
