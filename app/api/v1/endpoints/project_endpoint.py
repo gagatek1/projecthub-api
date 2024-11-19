@@ -3,7 +3,7 @@ from starlette import status
 
 from app.models.project import Project
 from app.services.project.create_service import create_service
-from app.services.project.get_service import get_projects
+from app.services.project.get_service import get_project, get_projects
 
 project_router = APIRouter(prefix="/projects", tags=["projects"])
 
@@ -20,3 +20,10 @@ async def show_projects():
     projects = get_projects()
 
     return projects
+
+
+@project_router.get("/{project_id}")
+async def show_project(project_id: str):
+    project = get_project(project_id)
+
+    return project
