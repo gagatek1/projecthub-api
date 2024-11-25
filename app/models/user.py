@@ -17,3 +17,8 @@ class UserVerify(BaseModel):
 class UserSignin(BaseModel):
     email: EmailStr
     password: Annotated[str, MinLen(8)]
+
+
+class UserRefreshToken(BaseModel):
+    user_id: str
+    refresh_token: str
