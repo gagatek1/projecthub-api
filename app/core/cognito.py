@@ -7,7 +7,7 @@ import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
-from app.models.user import UserSignin, UserSignup, UserVerify
+from app.models.user import UserRefreshToken, UserSignin, UserSignup, UserVerify
 
 load_dotenv()
 
@@ -22,7 +22,11 @@ class Cognito:
         self.client = boto3.client("cognito-idp", region_name=REGION_NAME)
 
     def _generate_secret_hash(self, username: str) -> str:
-        message = username + AWS_COGNITO_APP_CLIENT_ID
+        if username == "":
+            print(1)
+            message = AWS_COGNITO_APP_CLIENT_ID
+        else:
+            message = username + AWS_COGNITO_APP_CLIENT_ID
         secret = AWS_COGNITO_APP_CLIENT_SECRET
         digest = hmac.new(
             secret.encode("utf-8"),
@@ -33,7 +37,7 @@ class Cognito:
 
     def user_signup(self, user: UserSignup):
         try:
-            secret_hash = self._generate_secret_hash(user.email)
+            secret_hash = self._generate_secret_hash()
             response = self.client.sign_up(
                 ClientId=AWS_COGNITO_APP_CLIENT_ID,
                 Username=user.email,
@@ -66,6 +70,20 @@ class Cognito:
             AuthParameters={
                 "USERNAME": data.email,
                 "PASSWORD": data.password,
+                "SECRET_HASH": secret_hash,
+            },
+        )
+
+        return response
+
+    def new_token(self, data: UserRefreshToken):
+        secret_hash = self._generate_secret_hash(data.user_id)
+
+        response = self.client.initiate_auth(
+            ClientId=AWS_COGNITO_APP_CLIENT_ID,
+            AuthFlow="REFRESH_TOKEN_AUTH",
+            AuthParameters={
+                "REFRESH_TOKEN": data.refresh_token,
                 "SECRET_HASH": secret_hash,
             },
         )
