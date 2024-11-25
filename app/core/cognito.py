@@ -7,7 +7,7 @@ import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
-from app.models.user import UserSignup
+from app.models.user import UserSignup, UserVerify
 
 load_dotenv()
 
@@ -46,3 +46,14 @@ class Cognito:
             raise ValueError(f"Cognito sign-up failed: {error_message}")
         except Exception as e:
             raise ValueError(f"An unexpected error occurred: {e}")
+
+    def verify_account(self, data: UserVerify):
+        secret_hash = self._generate_secret_hash(data.email)
+        response = self.client.confirm_sign_up(
+            ClientId=AWS_COGNITO_APP_CLIENT_ID,
+            Username=data.email,
+            ConfirmationCode=data.confirmation_code,
+            SecretHash=secret_hash,
+        )
+
+        return response
