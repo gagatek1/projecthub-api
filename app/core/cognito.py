@@ -7,7 +7,7 @@ import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
-from app.models.user import UserSignup, UserVerify
+from app.models.user import UserSignin, UserSignup, UserVerify
 
 load_dotenv()
 
@@ -54,6 +54,20 @@ class Cognito:
             Username=data.email,
             ConfirmationCode=data.confirmation_code,
             SecretHash=secret_hash,
+        )
+
+        return response
+
+    def user_signin(self, data: UserSignin):
+        secret_hash = self._generate_secret_hash(data.email)
+        response = self.client.initiate_auth(
+            ClientId=AWS_COGNITO_APP_CLIENT_ID,
+            AuthFlow="USER_PASSWORD_AUTH",
+            AuthParameters={
+                "USERNAME": data.email,
+                "PASSWORD": data.password,
+                "SECRET_HASH": secret_hash,
+            },
         )
 
         return response
