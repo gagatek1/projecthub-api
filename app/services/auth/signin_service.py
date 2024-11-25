@@ -24,6 +24,7 @@ def signin_service(data: UserSignin, cognito: Cognito):
         content = {
             "AccessToken": response["AuthenticationResult"]["AccessToken"],
             "RefreshToken": response["AuthenticationResult"]["RefreshToken"],
+            "ExpiresIn": response["AuthenticationResult"]["ExpiresIn"],
         }
 
         return JSONResponse(content=content, status_code=200)
