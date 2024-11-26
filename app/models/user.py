@@ -29,3 +29,6 @@ class UserChangePassword(BaseModel):
     old_password: Annotated[str, MinLen(8)]
     new_password: Annotated[str, MinLen(8)]
 
+
+class UserForgotPassword(BaseModel):
+    email: EmailStr
