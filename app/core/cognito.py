@@ -7,7 +7,7 @@ import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
-from app.models.user import UserRefreshToken, UserSignin, UserSignup, UserVerify
+from app.models.user import UserRefreshToken, UserSignin, UserSignup, UserVerify, UserChangePassword
 
 load_dotenv()
 
@@ -86,6 +86,15 @@ class Cognito:
                 "REFRESH_TOKEN": data.refresh_token,
                 "SECRET_HASH": secret_hash,
             },
+        )
+
+        return response
+    
+    def change_password(self, data: UserChangePassword):
+        response = self.client.change_password(
+            PreviousPassword=data.old_password,
+            ProposedPassword=data.new_password,
+            AccessToken=data.access_token
         )
 
         return response
