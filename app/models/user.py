@@ -22,3 +22,10 @@ class UserSignin(BaseModel):
 class UserRefreshToken(BaseModel):
     user_id: str
     refresh_token: str
+
+
+class UserChangePassword(BaseModel):
+    access_token: str
+    old_password: Annotated[str, MinLen(8)]
+    new_password: Annotated[str, MinLen(8)]
+
