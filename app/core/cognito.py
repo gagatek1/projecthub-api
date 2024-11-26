@@ -7,7 +7,14 @@ import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
-from app.models.user import UserRefreshToken, UserSignin, UserSignup, UserVerify, UserChangePassword
+from app.models.user import (
+    UserChangePassword,
+    UserForgotPassword,
+    UserRefreshToken,
+    UserSignin,
+    UserSignup,
+    UserVerify,
+)
 
 load_dotenv()
 
@@ -22,11 +29,7 @@ class Cognito:
         self.client = boto3.client("cognito-idp", region_name=REGION_NAME)
 
     def _generate_secret_hash(self, username: str) -> str:
-        if username == "":
-            print(1)
-            message = AWS_COGNITO_APP_CLIENT_ID
-        else:
-            message = username + AWS_COGNITO_APP_CLIENT_ID
+        message = username + AWS_COGNITO_APP_CLIENT_ID
         secret = AWS_COGNITO_APP_CLIENT_SECRET
         digest = hmac.new(
             secret.encode("utf-8"),
@@ -37,7 +40,7 @@ class Cognito:
 
     def user_signup(self, user: UserSignup):
         try:
-            secret_hash = self._generate_secret_hash()
+            secret_hash = self._generate_secret_hash(user.email)
             response = self.client.sign_up(
                 ClientId=AWS_COGNITO_APP_CLIENT_ID,
                 Username=user.email,
@@ -89,12 +92,22 @@ class Cognito:
         )
 
         return response
-    
+
     def change_password(self, data: UserChangePassword):
         response = self.client.change_password(
             PreviousPassword=data.old_password,
             ProposedPassword=data.new_password,
-            AccessToken=data.access_token
+            AccessToken=data.access_token,
+        )
+
+        return response
+
+    def forgot_password(self, data: UserForgotPassword):
+        secret_hash = self._generate_secret_hash(data.email)
+        response = self.client.forgot_password(
+            ClientId=AWS_COGNITO_APP_CLIENT_ID,
+            Username=data.email,
+            SecretHash=secret_hash,
         )
 
         return response
