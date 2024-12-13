@@ -5,6 +5,7 @@ from app.core.cognito import Cognito
 from app.core.dependencies import get_cognito
 from app.models.user import (
     UserChangePassword,
+    UserConfirmForgotPassword,
     UserForgotPassword,
     UserRefreshToken,
     UserSignin,
@@ -12,6 +13,9 @@ from app.models.user import (
     UserVerify,
 )
 from app.services.auth.change_password_service import change_password_service
+from app.services.auth.confirm_forgot_password_service import (
+    confirm_forgot_password_service,
+)
 from app.services.auth.forgot_password_service import forgot_password_service
 from app.services.auth.new_token_service import new_token_service
 from app.services.auth.signin_service import signin_service
@@ -55,3 +59,10 @@ async def forgot_password(
     data: UserForgotPassword, cognito: Cognito = Depends(get_cognito)
 ):
     return forgot_password_service(data, cognito)
+
+
+@auth_router.post("/confirm")
+async def confirm_forgot_password(
+    data: UserConfirmForgotPassword, cognito: Cognito = Depends(get_cognito)
+):
+    return confirm_forgot_password_service(data, cognito)
