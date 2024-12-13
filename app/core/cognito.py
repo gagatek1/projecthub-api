@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 from app.models.user import (
     UserChangePassword,
+    UserConfirmForgotPassword,
     UserForgotPassword,
     UserRefreshToken,
     UserSignin,
@@ -107,6 +108,18 @@ class Cognito:
         response = self.client.forgot_password(
             ClientId=AWS_COGNITO_APP_CLIENT_ID,
             Username=data.email,
+            SecretHash=secret_hash,
+        )
+
+        return response
+
+    def confirm_forgot_password(self, data: UserConfirmForgotPassword):
+        secret_hash = self._generate_secret_hash(data.email)
+        response = self.client.confirm_forgot_password(
+            ClientId=AWS_COGNITO_APP_CLIENT_ID,
+            Username=data.email,
+            ConfirmationCode=data.confirmation_code,
+            Password=data.new_password,
             SecretHash=secret_hash,
         )
 
