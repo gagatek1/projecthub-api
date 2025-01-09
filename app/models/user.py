@@ -32,3 +32,9 @@ class UserChangePassword(BaseModel):
 
 class UserForgotPassword(BaseModel):
     email: EmailStr
+
+
+class UserConfirmForgotPassword(BaseModel):
+    email: EmailStr
+    confirmation_code: str
+    new_password: Annotated[str, MinLen(8)]
