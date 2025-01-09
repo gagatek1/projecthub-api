@@ -18,6 +18,4 @@ def confirm_forgot_password_service(data: UserConfirmForgotPassword, cognito: Co
         else:
             raise HTTPException(status_code=500, detail="Internal Server")
     else:
-        return JSONResponse(
-            content={"message": "password change"}, status_code=200
-        )
+        return JSONResponse(content={"message": "password change"}, status_code=200)
