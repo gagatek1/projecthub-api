@@ -7,9 +7,15 @@ import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
-from app.models.auth import (UserChangePassword, UserConfirmForgotPassword,
-                             UserForgotPassword, UserRefreshToken, UserSignin,
-                             UserSignup, UserVerify)
+from app.models.auth import (
+    UserChangePassword,
+    UserConfirmForgotPassword,
+    UserForgotPassword,
+    UserRefreshToken,
+    UserSignin,
+    UserSignup,
+    UserVerify,
+)
 
 load_dotenv()
 
