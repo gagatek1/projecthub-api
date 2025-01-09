@@ -2,7 +2,7 @@ import botocore
 from fastapi import HTTPException
 
 from app.core.cognito import Cognito
-from app.models.user import UserLogout
+from app.models.auth import UserLogout
 
 
 def logout_service(data: UserLogout, cognito: Cognito):

@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 
 from app.core.cognito import Cognito
-from app.models.user import UserChangePassword
+from app.models.auth import UserChangePassword
 
 
 def change_password_service(data: UserChangePassword, cognito: Cognito):

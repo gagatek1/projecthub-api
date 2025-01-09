@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 
 from app.core.cognito import Cognito
-from app.models.user import UserForgotPassword
+from app.models.auth import UserForgotPassword
 
 
 def forgot_password_service(data: UserForgotPassword, cognito: Cognito):

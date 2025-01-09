@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 
 from app.core.cognito import Cognito
-from app.models.user import UserRefreshToken
+from app.models.auth import UserRefreshToken
 
 
 def new_token_service(data: UserRefreshToken, cognito: Cognito):

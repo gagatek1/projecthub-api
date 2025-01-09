@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 
 from app.core.cognito import Cognito
-from app.models.user import UserSignin
+from app.models.auth import UserSignin
 
 
 def signin_service(data: UserSignin, cognito: Cognito):

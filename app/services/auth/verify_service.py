@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 
 from app.core.cognito import Cognito
-from app.models.user import UserVerify
+from app.models.auth import UserVerify
 
 
 def verify_service(data: UserVerify, cognito: Cognito):
