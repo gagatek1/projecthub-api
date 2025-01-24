@@ -3,6 +3,7 @@ from starlette import status
 
 from app.models.task import Task
 from app.services.task.create_service import create_service
+from app.services.task.delete_service import delete_service
 from app.services.task.get_service import get_task, get_tasks
 
 task_router = APIRouter(prefix="/tasks", tags=["tasks"])
@@ -27,3 +28,8 @@ async def show_task(task_id: str):
     task = get_task(task_id)
 
     return task
+
+
+@task_router.delete("/delete/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_task(task_id: str):
+    delete_service(task_id)
