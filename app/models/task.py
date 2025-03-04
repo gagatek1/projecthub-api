@@ -11,5 +11,5 @@ class Task(BaseModel):
     id: str = Field(default_factory=generate_id)
     name: str
     description: str
-    project: str
+    project_id: str
     assigned_user: str
