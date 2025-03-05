@@ -7,9 +7,15 @@ import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
-from app.models.auth import (UserChangePassword, UserConfirmForgotPassword,
-                             UserForgotPassword, UserRefreshToken, UserSignin,
-                             UserSignup, UserVerify)
+from app.models.auth import (
+    UserChangePassword,
+    UserConfirmForgotPassword,
+    UserForgotPassword,
+    UserRefreshToken,
+    UserSignin,
+    UserSignup,
+    UserVerify,
+)
 
 load_dotenv()
 
@@ -121,5 +127,10 @@ class Cognito:
 
     def logout(self, access_token: str):
         response = self.client.global_sign_out(AccessToken=access_token)
+
+        return response
+
+    def get_user(self, access_token: str):
+        response = self.client.get_user(AccessToken=access_token)
 
         return response

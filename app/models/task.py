@@ -13,4 +13,4 @@ class Task(BaseModel):
     name: str
     description: str
     project_id: Optional[str] = None
-    assigned_user: str
+    assigned_user: Optional[str] = None

@@ -1,11 +1,17 @@
+from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
-from fastapi.responses import JSONResponse
+from fastapi import HTTPException
 
 from app.core.database import dynamodb
 
 
-def update_service(project):
+def update_service(project, user):
     table = dynamodb.Table("projects")
+
+    response = table.query(KeyConditionExpression=Key("id").eq(project.id))
+    project_owner = response["Items"][0].get("project_owner")
+    if project_owner != user.get("Username"):
+        raise HTTPException(detail="Forbidden", status_code=403)
 
     try:
         response = table.update_item(
@@ -31,6 +37,6 @@ def update_service(project):
     except ClientError as e:
         error_message = e.response.get("Error", {}).get("Message", "Unknown error")
 
-        return JSONResponse(content={"error": error_message}, status_code=500)
+        raise HTTPException(detail=error_message, status_code=500)
     except AttributeError as e:
-        return JSONResponse(content={"error": str(e)}, status_code=400)
+        raise HTTPException(detail=str(e), status_code=400)
