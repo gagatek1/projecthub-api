@@ -19,26 +19,26 @@ async def create_project(project: Project, user: dict = Depends(get_token)):
 
 
 @project_router.get("/")
-async def show_projects():
+async def show_projects(user: dict = Depends(get_token)):
     projects = get_projects()
 
     return projects
 
 
 @project_router.get("/{project_id}")
-async def show_project(project_id: str):
+async def show_project(project_id: str, user: dict = Depends(get_token)):
     project = get_project(project_id)
 
     return project
 
 
 @project_router.delete("/delete/{project_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_project(project_id: str):
-    delete_service(project_id)
+async def delete_project(project_id: str, user: dict = Depends(get_token)):
+    delete_service(project_id, user)
 
 
 @project_router.put("/update")
-async def update_project(project: Project):
-    project = update_service(project)
+async def update_project(project: Project, user: dict = Depends(get_token)):
+    project = update_service(project, user)
 
     return project
