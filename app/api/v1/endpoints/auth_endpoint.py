@@ -3,12 +3,20 @@ from starlette import status
 
 from app.core.cognito import Cognito
 from app.core.dependencies import get_cognito
-from app.models.auth import (UserChangePassword, UserConfirmForgotPassword,
-                             UserForgotPassword, UserLogout, UserRefreshToken,
-                             UserSignin, UserSignup, UserVerify)
+from app.models.auth import (
+    UserChangePassword,
+    UserConfirmForgotPassword,
+    UserForgotPassword,
+    UserLogout,
+    UserRefreshToken,
+    UserSignin,
+    UserSignup,
+    UserVerify,
+)
 from app.services.auth.change_password_service import change_password_service
-from app.services.auth.confirm_forgot_password_service import \
-    confirm_forgot_password_service
+from app.services.auth.confirm_forgot_password_service import (
+    confirm_forgot_password_service,
+)
 from app.services.auth.forgot_password_service import forgot_password_service
 from app.services.auth.logout_service import logout_service
 from app.services.auth.new_token_service import new_token_service

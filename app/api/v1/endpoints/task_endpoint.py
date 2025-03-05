@@ -35,6 +35,7 @@ async def show_task(task_id: str):
 async def delete_task(task_id: str):
     delete_service(task_id)
 
+
 @task_router.put("/update")
 async def update_project(task: Task):
     task = update_service(task)
