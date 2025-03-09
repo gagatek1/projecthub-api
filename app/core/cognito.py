@@ -135,7 +135,14 @@ class Cognito:
 
         return response
 
-    def get_users(self):
+    def shows_users(self):
         response = self.client.list_users(UserPoolId=AWS_COGNITO_USER_POOL_ID)
 
         return response
+
+    def show_user(self, sub: str):
+        response = self.client.list_users(
+            UserPoolId=AWS_COGNITO_USER_POOL_ID, Filter=f'sub = "{sub}"'
+        )
+
+        return response.get("Users")
