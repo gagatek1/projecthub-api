@@ -7,7 +7,7 @@ from app.core.database import create_tables
 app = FastAPI(
     title="ProjectHub API",
     description="API to manage projects and tasks",
-    version="0.4.0",
+    version="0.6.0",
 )
 
 handler = Mangum(app)
