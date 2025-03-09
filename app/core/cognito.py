@@ -134,3 +134,28 @@ class Cognito:
         response = self.client.get_user(AccessToken=access_token)
 
         return response
+
+    def shows_users(self):
+        response = self.client.list_users(UserPoolId=AWS_COGNITO_USER_POOL_ID)
+
+        return response
+
+    def show_user(self, sub: str):
+        response = self.client.list_users(
+            UserPoolId=AWS_COGNITO_USER_POOL_ID, Filter=f'sub = "{sub}"'
+        )
+
+        return response.get("Users")
+
+    def change_user_email(self, access_token: str, new_email: str):
+        response = self.client.update_user_attributes(
+            AccessToken=access_token,
+            UserAttributes=[
+                {
+                    "Name": "email",
+                    "Value": new_email,
+                },
+            ],
+        )
+
+        return response
