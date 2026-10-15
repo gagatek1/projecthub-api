@@ -1,0 +1,83 @@
+[project]
+name = "projecthub-api"
+version = "0.7.0"
+description = "API to manage projects and tasks"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "boto3>=1.40",
+    "email-validator>=2.2",
+    "fastapi>=0.115",
+    "mangum>=0.19",
+    "pydantic>=2.12",
+    "pydantic-settings>=2.12",
+    "pynamodb>=6.1",
+]
+
+[dependency-groups]
+dev = [
+    "factory-boy>=3.3.3",
+    "httpx>=0.28",
+    "import-linter>=2.3",
+    "moto[cognitoidp,dynamodb]>=5.1",
+    "pytest>=8.4",
+    "pytest-cov>=6.2",
+    "ruff>=0.15",
+    "ty>=0.0.80",
+    "uvicorn>=0.32",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 120
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "B", "UP", "SIM", "C4", "RET", "ARG", "PT", "PL", "S", "TID", "ERA", "RUF"]
+ignore = ["PLR0913"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "S107", "PLR2004", "ARG"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "parents"
+
+[tool.ty.environment]
+python-version = "3.14"
+
+[tool.ty.src]
+include = ["app", "tests"]
+
+[tool.importlinter]
+root_package = "app"
+
+[[tool.importlinter.contracts]]
+name = "DDD layers: entrypoints -> domain -> shared"
+type = "layers"
+layers = ["app.entrypoints", "app.domain", "app.shared"]
+
+[[tool.importlinter.contracts]]
+name = "Identity and project contexts are independent"
+type = "independence"
+modules = ["app.domain.identity", "app.domain.project"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q --strict-markers"
+
+[tool.coverage.run]
+source = ["app"]
+branch = true
+
+[tool.coverage.report]
+skip_covered = true
+show_missing = true
+
+[[tool.ty.overrides]]
+include = ["tests/fixtures/factories.py"]
+
+[tool.ty.overrides.rules]
+invalid-attribute-override = "ignore"
