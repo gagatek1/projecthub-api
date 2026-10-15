@@ -163,7 +163,7 @@ All commands run inside the project's virtual environment through `uv run`.
 | Run one test file | `uv run pytest tests/domain/project/command_handlers/test_create_project.py -x` |
 | Coverage report | `uv run pytest --cov --cov-report=term-missing` |
 
-Before pushing, run the same checks as CI:
+GitHub Actions (`.github/workflows/ci.yml`) runs on every push to any branch and on pull requests, with two jobs: **lint** (formatting, ruff, ty, layer contracts, each as its own step) and **test** (pytest with coverage). To run the same checks locally before pushing:
 
 ```sh
 uv run ruff format --check . && uv run ruff check . && uv run ty check --error-on-warning && uv run lint-imports && uv run pytest
